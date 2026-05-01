@@ -12,20 +12,36 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven { url 'https://masa.dy.fi/maven' }
+	maven { url = "https://masa.dy.fi/maven/sakura-ryoko" }
 	maven { url = "https://api.modrinth.com/maven" }
+	maven { url = 'https://maven.fallenbreath.me/releases' }
 }
 
 loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"xray" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
+	runs {
+		client {
+			client()
+			configName = "Minecraft Client"
+			ideConfigGenerated = true
+			runDir = "run"
 		}
 	}
+	// This tells Loom to include client-side sources in the final JAR
+	splitEnvironmentSourceSets()
+}
 
+// Ensure the resources from the client folder are actually packaged
+processResources {
+	inputs.property "version", project.version
+
+	from(sourceSets.client.resources.srcDirs) {
+		include "fabric.mod.json"
+		expand "version": project.version
+	}
+
+	from(sourceSets.client.resources.srcDirs) {
+		exclude "fabric.mod.json"
+	}
 }
 
 dependencies {
@@ -37,8 +53,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	// ?modImplementation "fi.dy.masa.malilib"
-	modImplementation "maven.modrinth:malilib:${project.malilib_version}"
+	// This is a Masa-fit mod
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 }
 
 processResources {

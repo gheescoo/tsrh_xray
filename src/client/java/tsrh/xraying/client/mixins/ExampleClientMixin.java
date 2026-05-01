@@ -1,4 +1,4 @@
-package tsrh.xraying.client.mixin;
+package tsrh.xraying.client.mixins;
 
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ExampleClientMixin {
 	@Inject(at = @At("HEAD"), method = "run")
 	private void init(CallbackInfo info) {
+		System.out.println("Hello from the client!");
 		// This code is injected into the start of MinecraftClient.run()V
 	}
 }
