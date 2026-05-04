@@ -1,0 +1,19 @@
+{
+  "xraying.gui.title.configs": "Xraying Configs",
+
+  "xraying.gui.button.config_gui.generic":  "Generic",
+  "xraying.gui.button.config_gui.blockEntities":  "Block Entities",
+  "xraying.gui.button.config_gui.profiles": "Profiles",
+
+  "tsrheang_xray.config.generic.name.xray": "Xray",
+  "tsrheang_xray.config.generic.comment.xray": "Xray Toggle",
+  "tsrheang_xray.config.generic.name.manualReload": "Manual Reload",
+  "tsrheang_xray.config.generic.comment.manualReload": "Whether changing other options automatically triggers render world",
+  "tsrheang_xray.config.generic.name.xrayAlpha": "Xray Alpha",
+  "tsrheang_xray.config.generic.comment.xrayAlpha": "Alpha of blocks selected",
+  "tsrheang_xray.config.generic.name.otherAlpha": "Other Alpha",
+  "tsrheang_xray.config.generic.comment.otherAlpha": "Alpha of blocks not selected",
+
+  "tsrheang_xray.config.blockEntities.name.bedAlpha": "Alpha of beds",
+  "tsrheang_xray.config.blockEntities.name.chestAlpha": "Alpha of chests"
+}

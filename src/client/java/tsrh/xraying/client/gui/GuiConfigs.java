@@ -12,6 +12,7 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.gui.interfaces.IConfigGuiAllTab;
 import fi.dy.masa.malilib.util.StringUtils;
+import tsrh.xraying.client.Reference;
 import tsrh.xraying.client.Xray;
 import tsrh.xraying.client.config.Configs;
 
@@ -23,10 +24,10 @@ import static tsrh.xraying.client.Reference.MOD_ID;
 
 public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
     public GuiConfigs() {
-        super(10, 50, MOD_ID, null, "xraying.gui.title.configs");
+        super(10, 50, MOD_ID, null, "xraying.gui.title.configs", String.format("%s", Reference.MOD_VERSION));
     }
 
-    public static ConfigGuiTab tab = ConfigGuiTab.INFO_LINES;
+    public static ConfigGuiTab tab = ConfigGuiTab.GENERIC;
 
     @Override
     public void initGui()
@@ -85,6 +86,14 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
         {
             return ConfigOptionWrapper.createFor(Configs.Generic.OPTIONS);
         }
+        else if (tab == ConfigGuiTab.BLOCK_ENTITIES)
+        {
+            return ConfigOptionWrapper.createFor(Configs.BlockEntities.OPTIONS);
+        }
+        else if (tab == ConfigGuiTab.PROFILES)
+        {
+            return ConfigOptionWrapper.createFor(Configs.Profiles.OPTIONS);
+        }
 
         return Collections.emptyList();
     }
@@ -102,16 +111,12 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
 
         List<IConfigBase> list = new ArrayList<>();
 
-//        // Info Lines
+        list.addAll(Configs.Generic.HOTKEY_LIST);
+
+        // Info Lines
 //        list.addAll(INFO_LINE_LIST.stream().map(this::wrapConfig).toList());
 //        list.addAll(ConfigUtils.createConfigWrapperForType(ConfigType.INTEGER, INFO_LINE_LIST));
-//        // Structures
-//        list.add(this.wrapConfig(RendererToggle.OVERLAY_STRUCTURE_MAIN_TOGGLE));
-//        list.addAll(StructureToggle.VALUES.stream().map(this::wrapConfig).toList());
-//        list.addAll(StructureToggle.COLOR_CONFIGS);
-//        // Overlay Renderers
-//        list.addAll(RENDERER_LIST.stream().map(this::wrapConfig).toList());
-//        configs.addAll(ConfigOptionWrapper.createFor(list));
+        configs.addAll(ConfigOptionWrapper.createFor(list));
 
         return configs;
     }
@@ -140,11 +145,8 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
     {
         ALL                 (IConfigGuiAllTab.getTranslationKey()),
         GENERIC             ("xraying.gui.button.config_gui.generic"),
-        COLORS              ("xraying.gui.button.config_gui.colors"),
-        INFO_LINES          ("xraying.gui.button.config_gui.info_lines"),
-        STRUCTURES          ("xraying.gui.button.config_gui.structures"),
-        RENDERERS           ("xraying.gui.button.config_gui.renderers"),
-        SHAPES              ("xraying.gui.button.config_gui.shapes");
+        BLOCK_ENTITIES      ("xraying.gui.button.config_gui.blockEntities"),
+        PROFILES          ("xraying.gui.button.config_gui.profiles");
 
         private final String translationKey;
 

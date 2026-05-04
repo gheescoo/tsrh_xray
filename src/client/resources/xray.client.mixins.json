@@ -10,6 +10,10 @@
     "ExampleClientMixin",
     "FluidRendererMixin",
     "LightmapTextureManagerMixin",
+    "OrderedRenderCommandQueueImplMixin",
+    "entity.AbstractEndPortalBERMixin",
+    "entity.BannerBERMixin",
+    "entity.ChestBERMixin",
     "indigo.AbstractTerrainRenderContextMixin",
     "indigo.BlockRenderInfoMixin"
   ],

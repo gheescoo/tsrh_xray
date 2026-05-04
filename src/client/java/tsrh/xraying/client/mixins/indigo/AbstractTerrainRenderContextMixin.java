@@ -26,7 +26,6 @@ public abstract class AbstractTerrainRenderContextMixin {
     private void onBufferQuad(MutableQuadViewImpl quad, CallbackInfo ci) {
         int alpha = XrayETL.getAlpha(blockInfo.blockState, blockInfo.blockPos);
 
-//        int alpha = 25;
         if (alpha == 0) ci.cancel();
         else if (alpha != -1) {
             for (int i = 0; i < 4; i++) {

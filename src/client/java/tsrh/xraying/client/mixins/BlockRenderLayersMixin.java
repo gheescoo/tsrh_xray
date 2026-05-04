@@ -17,15 +17,17 @@ public class BlockRenderLayersMixin {
         @Inject(method = "getBlockLayer", at = @At("HEAD"), cancellable = true)
         private static void onGetBlockLayer(BlockState state, CallbackInfoReturnable<BlockRenderLayer> cir) {
             if (!XrayETL.isXrayActive) return;
-//
+
             int alpha = XrayETL.getAlpha(state, null);
             if (0 < alpha && alpha < 255) cir.setReturnValue(BlockRenderLayer.TRANSLUCENT);
         }
 
         @Inject(method = "getFluidLayer", at = @At("HEAD"), cancellable = true)
         private static void onGetFluidLayer(FluidState state, CallbackInfoReturnable<BlockRenderLayer> cir) {
+            if (!XrayETL.isXrayActive) return;
+
             int alpha = XrayETL.getAlpha(state.getBlockState(), null);
-            if (alpha > 0 && alpha < 255) {
+            if (0 < alpha && alpha < 255) {
                 cir.setReturnValue(BlockRenderLayer.TRANSLUCENT);
             }
 

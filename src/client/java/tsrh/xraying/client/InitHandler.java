@@ -10,6 +10,7 @@ import tsrh.xraying.client.config.Configs;
 //import tsrh.xraying.client.data.EntitiesDataManager;
 //import tsrh.xraying.client.data.HudDataManager;
 //import tsrh.xraying.client.event.*;
+import tsrh.xraying.client.event.InputHandler;
 import tsrh.xraying.client.gui.GuiConfigs;
 //import tsrh.xraying.client.hotkeys.KeyCallbacks;
 //import tsrh.xraying.client.renderer.OverlayRendererVillagerInfo;
@@ -31,8 +32,8 @@ public class InitHandler implements IInitializationHandler
 //		EntitiesDataManager.getInstance().onGameInit();
 //		DebugDataManager.getInstance().onGameInit();
 //
-//		InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
-//		InputEventHandler.getInputManager().registerMouseInputHandler(InputHandler.getInstance());
+		InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
+		InputEventHandler.getInputManager().registerMouseInputHandler(InputHandler.getInstance());
 //
 //		RenderHandler renderer = RenderHandler.getInstance();
 //		RenderEventHandler.getInstance().registerInGameGuiRenderer(renderer);
