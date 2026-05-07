@@ -15,6 +15,9 @@ env:
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -38,7 +41,7 @@ jobs:
           name: Artifacts
           path: build/libs/
       - name: Publish (CurseForge/Modrinth/GitHub)
-        uses: Kir-Antipov/mc-publish
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: tsrh-xray
           curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
