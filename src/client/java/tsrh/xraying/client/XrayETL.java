@@ -20,16 +20,18 @@ public class XrayETL {
 
     public static int alphaWhitelist = Configs.Generic.XRAY_ALPHA.getIntegerValue();
     public static int alphaBlacklist = Configs.Generic.OTHER_ALPHA.getIntegerValue();
-    public static int alphaChest = Configs.BlockEntities.CHEST_ALPHA.getIntegerValue();
 
-    static final List<Block> ORES = List.of(Blocks.COAL_ORE, Blocks.DEEPSLATE_COAL_ORE, Blocks.IRON_ORE, Blocks.DEEPSLATE_IRON_ORE, Blocks.GOLD_ORE, Blocks.DEEPSLATE_GOLD_ORE, Blocks.LAPIS_ORE, Blocks.DEEPSLATE_LAPIS_ORE, Blocks.REDSTONE_ORE, Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.DEEPSLATE_EMERALD_ORE, Blocks.COPPER_ORE, Blocks.DEEPSLATE_COPPER_ORE, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE, Blocks.ANCIENT_DEBRIS);
+    public static final List<Block> ORES = List.of(Blocks.COAL_ORE, Blocks.DEEPSLATE_COAL_ORE, Blocks.IRON_ORE, Blocks.DEEPSLATE_IRON_ORE, Blocks.GOLD_ORE, Blocks.DEEPSLATE_GOLD_ORE, Blocks.LAPIS_ORE, Blocks.DEEPSLATE_LAPIS_ORE, Blocks.REDSTONE_ORE, Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.DEEPSLATE_EMERALD_ORE, Blocks.COPPER_ORE, Blocks.DEEPSLATE_COPPER_ORE, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE, Blocks.ANCIENT_DEBRIS);
+
+    public static List<Block> WHITE_LIST = ORES;
+//    public static List<Block> BLACK_LIST = null;
 
 /**
     Block is blocked when it's not in the whitelist,
     and is not exposed
  */
     public static boolean notBlocked(Block block, BlockPos blockPos) {
-        return ORES.contains(block)
+        return WHITE_LIST.contains(block)
                 || blockPos == null
                 || !isExposed(blockPos);
     }
@@ -62,11 +64,7 @@ public class XrayETL {
     public static int getAlpha(BlockState state, BlockPos pos) {
         if(!isXrayActive) return -1;
 
-        if(ORES.contains(state.getBlock())) return alphaWhitelist;
-
-        if(state.getBlock() == Blocks.CHEST
-                || state.getBlock() == Blocks.TRAPPED_CHEST
-                || state.getBlock() == Blocks.ENDER_CHEST) return alphaChest;
+        if(WHITE_LIST.contains(state.getBlock())) return alphaWhitelist;
 
         return alphaBlacklist;
     }
