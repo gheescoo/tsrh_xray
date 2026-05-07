@@ -4,7 +4,16 @@
 # against bad commits.
 
 name: build
-on: [pull_request, push]
+on: [pull_request, workflow_dispatch]
+
+env:
+  MINECRAFT_VERSION: 1.21.11
+  JAVA_VERSION: 25
+  VERSION: 1.0.0+1.21.11
+  RELEASE_NAME: Tsrh Xray 1.0.0 for Minecraft 1.21.11
+  MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN_2026 }}
+  CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -22,9 +31,29 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: build
-        run: ./gradlew build
+        run: ./gradlew clean build
       - name: capture build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
           path: build/libs/
+      - name: Publish (CurseForge/Modrinth/GitHub)
+        uses: Kir-Antipov/mc-publish@v3.2
+        with:
+          curseforge-id: gheescoo
+          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+
+          modrinth-id: gheescoo
+          modrinth-token: "${{env.MODRINTH_TOKEN}}"
+
+          github-tag: "v${{env.VERSION}}"
+          github-token: "${{env.GITHUB_TOKEN}}"
+
+          name: "${{env.RELEASE_NAME}}"
+          version: "${{env.VERSION}}"
+          version-type: release
+          changelog-file: CHANGELOG.md
+
+          loaders: fabric
+          game-versions: "${{env.MINECRAFT_VERSION}}"
+          java: "${{env.JAVA_VERSION}}"

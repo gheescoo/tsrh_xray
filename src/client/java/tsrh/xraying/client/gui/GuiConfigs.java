@@ -1,11 +1,6 @@
 package tsrh.xraying.client.gui;
 
-import fi.dy.masa.malilib.MaLiLibConfigGui;
-import fi.dy.masa.malilib.config.ConfigType;
-import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
-import fi.dy.masa.malilib.config.options.BooleanHotkeyGuiWrapper;
-import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
@@ -13,12 +8,12 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.gui.interfaces.IConfigGuiAllTab;
 import fi.dy.masa.malilib.util.StringUtils;
 import tsrh.xraying.client.Reference;
-import tsrh.xraying.client.Xray;
 import tsrh.xraying.client.config.Configs;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static tsrh.xraying.client.Reference.MOD_ID;
 
@@ -56,7 +51,7 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
 
         if (rows > 1)
         {
-            int scrollbarPosition = this.getListWidget().getScrollbar().getValue();
+            int scrollbarPosition = Objects.requireNonNull(this.getListWidget()).getScrollbar().getValue();
             this.setListPosition(this.getListX(), 50 + (rows - 1) * 22);
             this.reCreateListWidget();
             this.getListWidget().getScrollbar().setValue(scrollbarPosition);
@@ -90,6 +85,15 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
         {
             return ConfigOptionWrapper.createFor(Configs.BlockEntities.OPTIONS);
         }
+        else if (tab == ConfigGuiTab.HOTKEYS)
+        {
+            List<IConfigBase> list = new ArrayList<>();
+
+            list.addAll(Configs.Generic.HOTKEY_LIST);
+            list.addAll(Configs.Profiles.HOTKEY_LIST);
+
+            return ConfigOptionWrapper.createFor(list);
+        }
         else if (tab == ConfigGuiTab.PROFILES)
         {
             return ConfigOptionWrapper.createFor(Configs.Profiles.OPTIONS);
@@ -100,7 +104,7 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
 
     @Override
     public boolean useAllTab() {
-        return false;
+        return true;
     }
 
     @Override
@@ -112,6 +116,9 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
         List<IConfigBase> list = new ArrayList<>();
 
         list.addAll(Configs.Generic.HOTKEY_LIST);
+        list.addAll(Configs.Profiles.HOTKEY_LIST);
+//        list.addAll(Configs.BlockEntities.HOTKEY_LIST);
+//        list.addAll(Configs.Profiles.OPTIONS);
 
         // Info Lines
 //        list.addAll(INFO_LINE_LIST.stream().map(this::wrapConfig).toList());
@@ -146,7 +153,8 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
         ALL                 (IConfigGuiAllTab.getTranslationKey()),
         GENERIC             ("xraying.gui.button.config_gui.generic"),
         BLOCK_ENTITIES      ("xraying.gui.button.config_gui.blockEntities"),
-        PROFILES          ("xraying.gui.button.config_gui.profiles");
+        HOTKEYS             ("xraying.gui.button.config_gui.hotkeys"),
+        PROFILES            ("xraying.gui.button.config_gui.profiles");
 
         private final String translationKey;
 

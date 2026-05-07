@@ -5,10 +5,7 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
-import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
-import fi.dy.masa.malilib.config.options.ConfigHotkey;
-import fi.dy.masa.malilib.config.options.ConfigInteger;
+import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.hotkeys.*;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
@@ -18,10 +15,16 @@ import fi.dy.masa.malilib.util.data.json.JsonUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import tsrh.xraying.client.Reference;
 import tsrh.xraying.client.Xray;
 import tsrh.xraying.client.XrayETL;
+import tsrh.xraying.client.config.extended.ProfileSelectionList;
 import tsrh.xraying.client.gui.GuiConfigs;
 
 import static tsrh.xraying.client.Xray.mc;
@@ -38,10 +41,13 @@ public class Configs implements IConfigHandler {
                 JsonObject root = element.getAsJsonObject();
 
                 ConfigUtils.readConfigBase(root, "Generic", Generic.OPTIONS);
+                ConfigUtils.readConfigBase(root, "Profile", Profiles.OPTIONS);
             } else {
                 Xray.LOGGER.error("load(): Failed to parse config file '{}'", configFile.toAbsolutePath());
             }
         }
+
+        XrayETL.WHITE_LIST = loadXrayList(Profiles.XRAY_LIST1);
     }
 
     @Override
@@ -56,9 +62,16 @@ public class Configs implements IConfigHandler {
             JsonObject root = new JsonObject();
 
             ConfigUtils.writeConfigBase(root, "Generic", Generic.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "Profile", Profiles.OPTIONS);
 
             JsonUtils.writeJsonToFile(root, dir.resolve(Reference.MOD_ID + ".json"));
         }
+    }
+
+    private static List<Block> loadXrayList(ConfigStringList xrayList) {
+        return xrayList.getStrings().stream()
+                .map(blockStr -> Registries.BLOCK.get(Identifier.of(blockStr)))
+                .collect(Collectors.toList());
     }
 
     static private void reloadWR(){
@@ -70,7 +83,7 @@ public class Configs implements IConfigHandler {
     static private void reloadWROnXray() { if(XrayETL.isXrayActive) reloadWR(); }
 
     /**
-     * In {@link Generic}, Mixins read from {@link tsrh.xraying.client.XrayETL},
+     * In {@link Generic}, Mixins read from {@link XrayETL},
      */
     private static final String GENERIC_KEY = Reference.MOD_ID + ".config.generic";
     public static class Generic {
@@ -168,6 +181,79 @@ public class Configs implements IConfigHandler {
 
     private static final String PROFILES_KEY = Reference.MOD_ID + ".config.profiles";
     public static class Profiles {
-        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of();
+
+        public static final ConfigOptionList CHOOSE_LIST    = new ConfigOptionList("chooseList", ProfileSelectionList.P0).apply(PROFILES_KEY);
+        public static final ConfigStringList XRAY_LIST1     = new ConfigStringList("list1", ImmutableList.of()).apply(PROFILES_KEY);
+        public static final ConfigStringList XRAY_LIST2     = new ConfigStringList("list2", ImmutableList.of()).apply(PROFILES_KEY);
+        public static final ConfigStringList XRAY_LIST3     = new ConfigStringList("list3", ImmutableList.of()).apply(PROFILES_KEY);
+        public static final ConfigStringList XRAY_LIST4     = new ConfigStringList("list4", ImmutableList.of()).apply(PROFILES_KEY);
+        public static final ConfigStringList XRAY_LIST5     = new ConfigStringList("list5", ImmutableList.of()).apply(PROFILES_KEY);
+
+        public static final ConfigHotkey ACTIVATE_PROFILE1  = new ConfigHotkey("activateProfile1", "").apply(PROFILES_KEY);
+        public static final ConfigHotkey ACTIVATE_PROFILE2  = new ConfigHotkey("activateProfile2", "").apply(PROFILES_KEY);
+        public static final ConfigHotkey ACTIVATE_PROFILE3  = new ConfigHotkey("activateProfile3", "").apply(PROFILES_KEY);
+        public static final ConfigHotkey ACTIVATE_PROFILE4  = new ConfigHotkey("activateProfile4", "").apply(PROFILES_KEY);
+        public static final ConfigHotkey ACTIVATE_PROFILE5  = new ConfigHotkey("activateProfile5", "").apply(PROFILES_KEY);
+
+        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                CHOOSE_LIST,
+                XRAY_LIST1,
+                XRAY_LIST2,
+                XRAY_LIST3,
+                XRAY_LIST4,
+                XRAY_LIST5
+        );
+
+        public static final ImmutableList<IHotkey> HOTKEY_LIST = ImmutableList.of(
+                ACTIVATE_PROFILE1,
+                ACTIVATE_PROFILE2,
+                ACTIVATE_PROFILE3,
+                ACTIVATE_PROFILE4,
+                ACTIVATE_PROFILE5
+        );
+
+        static {
+            for(IHotkey hotkey : HOTKEY_LIST) {
+                hotkey.getKeybind().setCallback((action, key) -> {
+                    switch (hotkey.getName()) {
+                        case "activateProfile1" -> {
+                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST1);
+                            CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P1);
+                        }
+                        case "activateProfile2" -> {
+                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST2);
+                            CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P2);
+                        }
+                        case "activateProfile3" -> {
+                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST3);
+                            CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P3);
+                        }
+                        case "activateProfile4" -> {
+                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST4);
+                            CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P4);
+                        }
+                        case "activateProfile5" -> {
+                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST5);
+                            CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P5);
+                        }
+                    }
+                    reloadWROnXray();
+                    return true;
+                });
+            }
+
+            CHOOSE_LIST.setValueChangeCallback(config -> {
+                switch (config.getOptionListValue()) {
+                    case ProfileSelectionList.P0 -> XrayETL.WHITE_LIST = XrayETL.ORES;
+                    case ProfileSelectionList.P1 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST1);
+                    case ProfileSelectionList.P2 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST2);
+                    case ProfileSelectionList.P3 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST3);
+                    case ProfileSelectionList.P4 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST4);
+                    case ProfileSelectionList.P5 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST5);
+                    default -> XrayETL.WHITE_LIST = List.of();
+                }
+                reloadWROnXray();
+            });
+        }
     }
 }
