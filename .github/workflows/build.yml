@@ -11,7 +11,7 @@ env:
   JAVA_VERSION: 25
   VERSION: 1.0.0+1.21.11
   RELEASE_NAME: Tsrh Xray 1.0.0 for Minecraft 1.21.11
-  MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN_2026 }}
+  MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN_2036 }}
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
@@ -43,8 +43,8 @@ jobs:
       - name: Publish (CurseForge/Modrinth/GitHub)
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          curseforge-id: 1536287
-          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+#          curseforge-id: 1536287
+#          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
 
           modrinth-id: y4K9OxC4
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
