@@ -12,7 +12,7 @@ env:
   VERSION: 1.0.0+1.21.11
   RELEASE_NAME: Tsrh Xray 1.0.0 for Minecraft 1.21.11
   MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN_2036 }}
-  CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+#  CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
 permissions:
