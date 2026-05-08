@@ -8,8 +8,7 @@
 		"Tsrheang Drin"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/gheescoo/tsrh_xray"
 	},
 	"license": "LGPL-3.0-or-later",
 	"icon": "assets/xray/icon.png",
