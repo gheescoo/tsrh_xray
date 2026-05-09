@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tsrh.xraying.client.mixins.lithium",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "tsrh.xraying.client.MixinPlugin",
+  "mixins": [],
+  "client": [
+    "ChunkAwareBlockCollisionSweeperMixin",
+    "LithiumEntityCollisionsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

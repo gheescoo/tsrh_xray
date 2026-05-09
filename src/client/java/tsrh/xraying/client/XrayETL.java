@@ -32,8 +32,7 @@ public class XrayETL {
  */
     public static boolean notBlocked(Block block, BlockPos blockPos) {
         return WHITE_LIST.contains(block)
-                || blockPos == null
-                || !isExposed(blockPos);
+                && (blockPos == null || !isExposed(blockPos));
     }
     public static boolean isBlocked(Block block, BlockPos blockPos) {return !notBlocked(block, blockPos);}
 
@@ -52,7 +51,7 @@ public class XrayETL {
     }
 
     public static boolean shouldDrawSide(BlockState state, BlockView view, BlockPos pos, Direction facing, boolean returns) {
-        if (!returns && !isBlocked(state.getBlock(), pos)) {
+        if (!returns && notBlocked(state.getBlock(), pos)) {
             BlockPos adjPos = pos.offset(facing);
             BlockState adjState = view.getBlockState(adjPos);
             return adjState.getCullingFace(facing.getOpposite()) != VoxelShapes.fullCube() || adjState.getBlock() != state.getBlock() || !adjState.isOpaqueFullCube() || isBlocked(adjState.getBlock(), adjPos);

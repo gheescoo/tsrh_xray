@@ -49,8 +49,17 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+
+	modCompileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modCompileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
+//	modRuntimeOnly "maven.modrinth:modmenu:${project.modmenu_version}"
+
+	modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+//	modRuntimeOnly "maven.modrinth:sodium:${project.sodium_version}"
+	modCompileOnly "maven.modrinth:lithium:${project.lithium_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {

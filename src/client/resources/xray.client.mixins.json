@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "tsrh.xraying.client.mixins",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "tsrh.xraying.client.MixinPlugin",
   "mixins": [],
   "client": [
     "BlockModelRendererMixin",
@@ -10,12 +11,7 @@
     "ExampleClientMixin",
     "FluidRendererMixin",
     "LightmapTextureManagerMixin",
-    "OrderedRenderCommandQueueImplMixin",
-    "entity.AbstractEndPortalBERMixin",
-    "entity.BannerBERMixin",
-    "entity.ChestBERMixin",
-    "indigo.AbstractTerrainRenderContextMixin",
-    "indigo.BlockRenderInfoMixin"
+    "entity.BannerBERMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tsrh.xraying.client.mixins.sodium",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "tsrh.xraying.client.MixinPlugin",
+  "mixinextras": {
+    "minVersion": "0.5.4"
+  },
+  "mixins": [],
+  "client": [
+    "SodiumBlockOcclusionCacheMixin",
+    "SodiumBlockRendererMixin",
+    "SodiumDefaultFluidRendererMixin",
+    "SodiumFluidRendererImplMixin",
+    "SodiumInnerPartitionBSPNodeMixin",
+    "SodiumLightDataAccessMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

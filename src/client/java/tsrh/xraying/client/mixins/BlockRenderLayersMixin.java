@@ -10,8 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import tsrh.xraying.client.XrayETL;
 
-import static tsrh.xraying.client.config.Configs.Generic.XRAY_ALPHA;
-
 @Mixin(BlockRenderLayers.class)
 public class BlockRenderLayersMixin {
         @Inject(method = "getBlockLayer", at = @At("HEAD"), cancellable = true)
@@ -30,14 +28,6 @@ public class BlockRenderLayersMixin {
             if (0 < alpha && alpha < 255) {
                 cir.setReturnValue(BlockRenderLayer.TRANSLUCENT);
             }
-
-//            else {
-//                Ambience ambience = Modules.get().get(Ambience.class);
-//                int a = ambience.lavaColor.get().a;
-//                if (ambience.isActive() && ambience.customLavaColor.get() && a > 0 && a < 255) {
-//                    cir.setReturnValue(RenderLayer.TRANSLUCENT);
-//                }
-//            }
         }
 }
 

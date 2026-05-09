@@ -21,14 +21,10 @@ import tsrh.xraying.client.XrayETL;
 @Mixin(FluidRenderer.class)
 public abstract class FluidRendererMixin {
     @Unique private final ThreadLocal<Integer> alphas = new ThreadLocal<>();
-    @Unique private final ThreadLocal<Boolean> ambient = ThreadLocal.withInitial(() -> false);
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void onRender(BlockRenderView world, BlockPos pos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState, CallbackInfo info) {
-//        Ambience ambience = Modules.get().get(Ambience.class);
-//        ambient.set(ambience.isActive() && ambience.customLavaColor.get() && fluidState.isIn(FluidTags.LAVA));
-//
-//        // Xray and Wallhack
+//      Xray and Wallhack
         int alpha = XrayETL.getAlpha(fluidState.getBlockState(), pos);
         if (alpha == 0) info.cancel();
         else alphas.set(alpha);
@@ -37,13 +33,7 @@ public abstract class FluidRendererMixin {
     @Inject(method = "vertex", at = @At("HEAD"), cancellable = true)
     private void onVertex(VertexConsumer vertexConsumer, float x, float y, float z, float red, float green, float blue, float u, float v, int light, CallbackInfo info) {
         int alpha = alphas.get();
-
-        if (ambient.get()) {
-//            Color color = Modules.get().get(Ambience.class).lavaColor.get();
-            vertex(vertexConsumer, x, y, z, 0x39, 0xc5, 0xbb, alpha, u, v, light);
-            info.cancel();
-        }
-        else if (alpha != -1) {
+        if (alpha != -1) {
             vertex(vertexConsumer, x, y, z, (int) (red * 255), (int) (green * 255), (int) (blue * 255), alpha, u, v, light);
             info.cancel();
         }

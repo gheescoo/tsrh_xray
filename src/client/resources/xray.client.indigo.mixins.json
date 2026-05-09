@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tsrh.xraying.client.mixins.indigo",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "tsrh.xraying.client.MixinPlugin",
+  "mixins": [],
+  "client": [
+    "AbstractTerrainRenderContextMixin",
+    "BlockRenderInfoMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

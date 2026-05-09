@@ -16,11 +16,26 @@
 	"entrypoints": {
 		"client": [
 			"tsrh.xraying.client.Xray"
+		],
+		"modmenu": [
+			"tsrh.xraying.client.gui.ModMenuIntegration"
 		]
 	},
 	"mixins": [
 		{
 			"config": "xray.client.mixins.json",
+			"environment": "client"
+		},
+		{
+			"config": "xray.client.indigo.mixins.json",
+			"environment": "client"
+		},
+		{
+			"config": "xray.client.sodium.mixins.json",
+			"environment": "client"
+		},
+		{
+			"config": "xray.client.lithium.mixins.json",
 			"environment": "client"
 		}
 	],
@@ -31,6 +46,9 @@
 		"malilib": ">=0.27.9"
 	},
 	"suggests": {
-		"fabric-api": ">=0.141.3"
+		"fabric-api": ">=0.141.3",
+		"sodium": ">=0.8.11",
+		"lithium": ">=0.21.4",
+		"modmenu": ">=17.0.0"
 	}
 }
