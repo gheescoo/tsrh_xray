@@ -9,8 +9,8 @@ on: [pull_request, workflow_dispatch]
 env:
   MINECRAFT_VERSION: 1.21.11
   JAVA_VERSION: 25
-  VERSION: 1.1.0+1.21.11
-  RELEASE_NAME: Tsrheang Xray 1.1.0 for Minecraft 1.21.11
+  VERSION: 1.1.1+1.21.11 test test
+  RELEASE_NAME: Tsrheang Xray 1.1.1 for Minecraft 1.21.11
   MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN_2036 }}
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}

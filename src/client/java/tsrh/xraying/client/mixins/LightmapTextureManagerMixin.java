@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import tsrh.xraying.client.XrayETL;
 
 @Mixin(LightmapTextureManager.class)
 public abstract class LightmapTextureManagerMixin {
@@ -26,6 +27,7 @@ public abstract class LightmapTextureManagerMixin {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V", shift = At.Shift.AFTER), cancellable = true)
     private void update$skip(float tickProgress, CallbackInfo ci, @Local Profiler profiler) {
+        if(!XrayETL.getFullbrightStatus()) return;
         RenderSystem.getDevice().createCommandEncoder().clearColorTexture(glTexture, ColorHelper.getArgb(255, 255, 255, 255));
         profiler.pop();
         ci.cancel();

@@ -89,13 +89,17 @@ public class Configs implements IConfigHandler {
     public static class Generic {
         public static final ConfigBooleanHotkeyed   XRAY            = new ConfigBooleanHotkeyed("xray", false, "COMMA", KeybindSettings.RELEASE_ALLOW_EXTRA).apply(GENERIC_KEY);
         public static final ConfigBoolean           MANUAL_RELOAD   = new ConfigBoolean("manualReload", false).apply(GENERIC_KEY);
+        public static final ConfigBoolean           AUTO_FULLBRIGHT = new ConfigBoolean("autoFullbright", false).apply(GENERIC_KEY);
+        public static final ConfigBooleanHotkeyed   FULLBRIGHT_XRAY = new ConfigBooleanHotkeyed("fullbrightXray", true, "NONE", KeybindSettings.RELEASE_ALLOW_EXTRA).apply(GENERIC_KEY);
         public static final ConfigHotkey            OPEN_CONFIG_GUI = new ConfigHotkey("openConfigGui", "W,C").apply(GENERIC_KEY);
         public static final ConfigInteger           XRAY_ALPHA      = new ConfigInteger("xrayAlpha", 255, 0, 255).apply(GENERIC_KEY);
         public static final ConfigInteger           OTHER_ALPHA     = new ConfigInteger("otherAlpha", 64, 0, 255).apply(GENERIC_KEY);
 
-        public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+        public static ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 XRAY,
+                FULLBRIGHT_XRAY,
                 MANUAL_RELOAD,
+                AUTO_FULLBRIGHT,
                 OPEN_CONFIG_GUI,
                 XRAY_ALPHA,
                 OTHER_ALPHA
@@ -103,6 +107,7 @@ public class Configs implements IConfigHandler {
 
         public static final List<IHotkey> HOTKEY_LIST = ImmutableList.of(
                 XRAY,
+                FULLBRIGHT_XRAY,
                 OPEN_CONFIG_GUI
         );
 
@@ -114,6 +119,16 @@ public class Configs implements IConfigHandler {
                 });
                 XrayETL.isXrayActive = XRAY.getBooleanValue();
                 reloadWR();
+            });
+            FULLBRIGHT_XRAY.setValueChangeCallback((config) -> {
+                boolean previousFullbrightStatus = XrayETL.getFullbrightStatus();
+                XrayETL.fullbrightXray = FULLBRIGHT_XRAY.getBooleanValue();
+                if(previousFullbrightStatus != XrayETL.getFullbrightStatus()) reloadWR();
+            });
+            AUTO_FULLBRIGHT.setValueChangeCallback((config) -> {
+                boolean previousFullbrightStatus = XrayETL.getFullbrightStatus();
+                XrayETL.autoFullbright = AUTO_FULLBRIGHT.getBooleanValue();
+                if(previousFullbrightStatus != XrayETL.getFullbrightStatus()) reloadWR();
             });
             OPEN_CONFIG_GUI.getKeybind().setCallback((action, key) -> {
                 GuiBase.openGui(new GuiConfigs());

@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "tsrheang_xray",
 	"version": "${version}",
-	"name": "xray",
+	"name": "Tsrheang Xray",
 	"description": "Configurable Xraying client that fits into Masa",
 	"authors": [
 		"Tsrheang Drin"

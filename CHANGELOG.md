@@ -8,3 +8,6 @@
 - Integration of Sodium, Lithium, Vanilla and Mod Menu.
 - Removed chest and end portal rendering mixin.
 - Removed not to be used code.
+
+# 1.21.11+1.1.1 (2026-05-10)
+- Fixed fullbright
