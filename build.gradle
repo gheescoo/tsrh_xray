@@ -2,8 +2,7 @@ plugins {
 	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
-
-version = project.mod_version
+version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 repositories {
@@ -28,10 +27,10 @@ loom {
 // When using splitEnvironmentSourceSets, Loom uses 'processClientResources'
 // for the client source set. We configure it here.
 tasks.named('processClientResources', ProcessResources) {
-	inputs.property "version", project.version
+	inputs.property "version", mod_version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": mod_version
 	}
 
 	// Ensure we handle potential duplicates if Gradle tries to look in 'main'
