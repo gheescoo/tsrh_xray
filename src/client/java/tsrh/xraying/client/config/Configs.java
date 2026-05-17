@@ -41,13 +41,14 @@ public class Configs implements IConfigHandler {
                 JsonObject root = element.getAsJsonObject();
 
                 ConfigUtils.readConfigBase(root, "Generic", Generic.OPTIONS);
+                ConfigUtils.readConfigBase(root, "BlockEntities", BlockEntities.OPTIONS);
                 ConfigUtils.readConfigBase(root, "Profile", Profiles.OPTIONS);
             } else {
                 Xray.LOGGER.error("load(): Failed to parse config file '{}'", configFile.toAbsolutePath());
             }
         }
 
-        XrayETL.WHITE_LIST = loadXrayList(Profiles.XRAY_LIST1);
+        XrayETL.setXrayList(XrayETL.ORES);
     }
 
     @Override
@@ -62,6 +63,7 @@ public class Configs implements IConfigHandler {
             JsonObject root = new JsonObject();
 
             ConfigUtils.writeConfigBase(root, "Generic", Generic.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "BlockEntities", BlockEntities.OPTIONS);
             ConfigUtils.writeConfigBase(root, "Profile", Profiles.OPTIONS);
 
             JsonUtils.writeJsonToFile(root, dir.resolve(Reference.MOD_ID + ".json"));
@@ -89,8 +91,9 @@ public class Configs implements IConfigHandler {
     public static class Generic {
         public static final ConfigBooleanHotkeyed   XRAY            = new ConfigBooleanHotkeyed("xray", false, "COMMA", KeybindSettings.RELEASE_ALLOW_EXTRA).apply(GENERIC_KEY);
         public static final ConfigBoolean           MANUAL_RELOAD   = new ConfigBoolean("manualReload", false).apply(GENERIC_KEY);
-        public static final ConfigBoolean           AUTO_FULLBRIGHT = new ConfigBoolean("autoFullbright", false).apply(GENERIC_KEY);
+        public static final ConfigBoolean           AUTO_FULLBRIGHT = new ConfigBoolean("autoFullbright", true).apply(GENERIC_KEY);
         public static final ConfigBooleanHotkeyed   FULLBRIGHT_XRAY = new ConfigBooleanHotkeyed("fullbrightXray", true, "NONE", KeybindSettings.RELEASE_ALLOW_EXTRA).apply(GENERIC_KEY);
+        public static final ConfigBooleanHotkeyed   EXPOSED_ONLY    = new ConfigBooleanHotkeyed("exposedOnly", false, "NONE", KeybindSettings.RELEASE_ALLOW_EXTRA).apply(GENERIC_KEY);
         public static final ConfigHotkey            OPEN_CONFIG_GUI = new ConfigHotkey("openConfigGui", "W,C").apply(GENERIC_KEY);
         public static final ConfigInteger           XRAY_ALPHA      = new ConfigInteger("xrayAlpha", 255, 0, 255).apply(GENERIC_KEY);
         public static final ConfigInteger           OTHER_ALPHA     = new ConfigInteger("otherAlpha", 64, 0, 255).apply(GENERIC_KEY);
@@ -99,6 +102,7 @@ public class Configs implements IConfigHandler {
                 XRAY,
                 FULLBRIGHT_XRAY,
                 MANUAL_RELOAD,
+                EXPOSED_ONLY,
                 AUTO_FULLBRIGHT,
                 OPEN_CONFIG_GUI,
                 XRAY_ALPHA,
@@ -108,6 +112,7 @@ public class Configs implements IConfigHandler {
         public static final List<IHotkey> HOTKEY_LIST = ImmutableList.of(
                 XRAY,
                 FULLBRIGHT_XRAY,
+                EXPOSED_ONLY,
                 OPEN_CONFIG_GUI
         );
 
@@ -119,6 +124,10 @@ public class Configs implements IConfigHandler {
                 });
                 XrayETL.isXrayActive = XRAY.getBooleanValue();
                 reloadWR();
+            });
+            EXPOSED_ONLY.setValueChangeCallback((config) -> {
+                XrayETL.exposedOnly = config.getBooleanValue();
+                reloadWROnXray();
             });
             FULLBRIGHT_XRAY.setValueChangeCallback((config) -> {
                 boolean previousFullbrightStatus = XrayETL.getFullbrightStatus();
@@ -232,23 +241,23 @@ public class Configs implements IConfigHandler {
                 hotkey.getKeybind().setCallback((action, key) -> {
                     switch (hotkey.getName()) {
                         case "activateProfile1" -> {
-                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST1);
+                            XrayETL.setXrayList(loadXrayList(XRAY_LIST1));
                             CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P1);
                         }
                         case "activateProfile2" -> {
-                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST2);
+                            XrayETL.setXrayList(loadXrayList(XRAY_LIST2));
                             CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P2);
                         }
                         case "activateProfile3" -> {
-                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST3);
+                            XrayETL.setXrayList(loadXrayList(XRAY_LIST3));
                             CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P3);
                         }
                         case "activateProfile4" -> {
-                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST4);
+                            XrayETL.setXrayList(loadXrayList(XRAY_LIST4));
                             CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P4);
                         }
                         case "activateProfile5" -> {
-                            XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST5);
+                            XrayETL.setXrayList(loadXrayList(XRAY_LIST5));
                             CHOOSE_LIST.setOptionListValue(ProfileSelectionList.P5);
                         }
                     }
@@ -259,13 +268,13 @@ public class Configs implements IConfigHandler {
 
             CHOOSE_LIST.setValueChangeCallback(config -> {
                 switch (config.getOptionListValue()) {
-                    case ProfileSelectionList.P0 -> XrayETL.WHITE_LIST = XrayETL.ORES;
-                    case ProfileSelectionList.P1 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST1);
-                    case ProfileSelectionList.P2 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST2);
-                    case ProfileSelectionList.P3 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST3);
-                    case ProfileSelectionList.P4 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST4);
-                    case ProfileSelectionList.P5 -> XrayETL.WHITE_LIST = loadXrayList(XRAY_LIST5);
-                    default -> XrayETL.WHITE_LIST = List.of();
+                    case ProfileSelectionList.P0 -> XrayETL.setXrayList(XrayETL.ORES);
+                    case ProfileSelectionList.P1 -> XrayETL.setXrayList(loadXrayList(XRAY_LIST1));
+                    case ProfileSelectionList.P2 -> XrayETL.setXrayList(loadXrayList(XRAY_LIST2));
+                    case ProfileSelectionList.P3 -> XrayETL.setXrayList(loadXrayList(XRAY_LIST3));
+                    case ProfileSelectionList.P4 -> XrayETL.setXrayList(loadXrayList(XRAY_LIST4));
+                    case ProfileSelectionList.P5 -> XrayETL.setXrayList(loadXrayList(XRAY_LIST5));
+                    default -> XrayETL.setXrayList(XrayETL.ORES);
                 }
                 reloadWROnXray();
             });

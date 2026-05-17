@@ -11,7 +11,9 @@
     "ExampleClientMixin",
     "FluidRendererMixin",
     "LightmapTextureManagerMixin",
-    "entity.BannerBERMixin"
+    "entity.BannerBERMixin",
+    "entity.ChestBERMixin",
+    "entity.ShulkerBERMixin"
   ],
   "injectors": {
     "defaultRequire": 1

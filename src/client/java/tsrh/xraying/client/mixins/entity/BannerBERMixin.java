@@ -14,6 +14,6 @@ public class BannerBERMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/SpriteIdentifier;getRenderLayer(Ljava/util/function/Function;)Lnet/minecraft/client/render/RenderLayer;"
             ))
     private static RenderLayer getTranslucentLayer(net.minecraft.client.util.SpriteIdentifier instance, java.util.function.Function<net.minecraft.util.Identifier, RenderLayer> layerFactory) {
-        return instance.getRenderLayer(RenderLayers::entityTranslucent);
+        return instance.getRenderLayer(RenderLayers::entityTranslucentEmissive);
     }
 }

@@ -90,6 +90,7 @@ public class GuiConfigs extends GuiConfigsBase implements IConfigGuiAllTab {
             List<IConfigBase> list = new ArrayList<>();
 
             list.addAll(Configs.Generic.HOTKEY_LIST);
+            list.addAll(Configs.BlockEntities.HOTKEY_LIST);
             list.addAll(Configs.Profiles.HOTKEY_LIST);
 
             return ConfigOptionWrapper.createFor(list);

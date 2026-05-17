@@ -14,6 +14,8 @@
   "tsrheang_xray.config.generic.comment.fullbrightXray": "Simply ignore it if other fullbright mods like tweakeroo are installed",
   "tsrheang_xray.config.generic.name.autoFullbright": "Auto Fullbright",
   "tsrheang_xray.config.generic.comment.autoFullbright": "Automatically enable fullbright when xray is enabled",
+  "tsrheang_xray.config.generic.name.exposedOnly": "Exposed Only",
+  "tsrheang_xray.config.generic.comment.exposedOnly": "Only xraying exposed blocks",
   "tsrheang_xray.config.generic.name.openConfigGui": "Open Config Gui",
   "tsrheang_xray.config.generic.comment.openConfigGui": "Open this config gui",
   "tsrheang_xray.config.generic.name.xrayAlpha": "Xray Alpha",
